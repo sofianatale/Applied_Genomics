@@ -16,7 +16,7 @@
 - [Results](#results)  
 - [Discussion](#discussion)  
 - [Conclusion](#conclusion)  
-- [References (selected)](#references-selected)  
+- [References](#references)  
 - [Author](#author)  
 
 
