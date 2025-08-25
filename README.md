@@ -117,4 +117,5 @@ It provides a transferable pipeline for non-model species, with applications in:
 ## Author
 **Sofia Natale**  
 MSc in Bioinformatics – University of Bologna  
-GitHub: [sofianatale](https://github.com/sofianatale)  
+**Contact**: sofia.natale@studio.unibo.it
+ 
