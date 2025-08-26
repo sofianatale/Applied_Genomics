@@ -1,4 +1,4 @@
-# Variant Calling and VCF Format
+# Variant Calling and Annotation
 
 ## 1. Introduction
 After sequencing, alignment, QC, and filtering, the next step is **variant calling**.  
@@ -10,7 +10,7 @@ After sequencing, alignment, QC, and filtering, the next step is **variant calli
 Calling a variant requires careful evaluation of multiple factors:
 
 - **Base call quality** of each supporting base.  
-- **Mapping quality** (MQ) of aligned reads.  
+- **Mapping quality (MQ)** of aligned reads.  
 - **Sequencing depth** → minimum number of reads supporting the variant.  
 - **Proximity to indels or homopolymer runs** (error-prone regions).  
 - **Single-sample vs multi-sample calling**.  
@@ -81,9 +81,50 @@ Columns include:
 - Half of reads show `G`, half `T` → heterozygous SNP.  
 - A single read shows a unique substitution → likely sequencing error.  
 
-## 7. Key Takeaways
-- Variant calling produces **VCF files** with SNPs, indels, and annotations.  
-- Careful evaluation of **base quality, mapping quality, and depth** is essential.  
-- **Homopolymer regions** are problematic → check for sequencing artifacts.  
-- **Joint calling** is preferred for population studies.  
-- **IGV** is a powerful tool to visually validate variants.  
+## 7. Variant Annotation
+Once variants are called, the next step is to understand their **biological impact**.
+
+- Variants can occur in **genes, introns, regulatory regions**.  
+- Consequences vary depending on location (e.g., coding region indel vs intergenic SNP).  
+
+### Example – Indel Variant
+- Sample shows a **28-base deletion** in half the reads.  
+- Reference genome retains all 28 bases.  
+- Interpretation: the individual is **heterozygous** for this variant.  
+
+## 8. Tools for Variant Annotation
+### Ensembl Genome Browser
+- Allows visualization of **genomes, genes, transcripts, proteins, and variants**.  
+- Example: searching the **KMO gene** gives:  
+  - Chromosomal location.  
+  - Gene description.  
+  - Transcript IDs and number.  
+  - Encoded protein + UniProt link.  
+  - Variant table for known polymorphisms (dbSNP, Ensembl).  
+
+### Variant Effect Predictor (VEP)
+- Provided by Ensembl.  
+- Takes VCF as input.  
+- Outputs:  
+  - Genomic location of variants.  
+  - Variant type (missense, synonymous, frameshift…).  
+  - Functional consequences on gene/protein.  
+
+### dbSNP
+- Repository of **known SNPs and small indels**.  
+- Variants deposited with IDs (`rsXXXX`).  
+- Can be cross-referenced to validate if a variant is novel.  
+
+## 9. Applications of Annotation
+- **Identify novel variants** after excluding known ones.  
+- Correlate variants with **phenotypes** (e.g., disease vs healthy).  
+- In clinical settings: interpret pathogenic variants (cancer, rare diseases).  
+- In population genomics: compute **allele frequencies** and study evolutionary forces.  
+- In applied research: adapt pipelines depending on species or goal (cancer, microorganisms, animal genomes).  
+
+## Key Takeaways
+- Variant calling produces **VCF files**, but interpretation requires **annotation**.  
+- Tools like **Ensembl, dbSNP, VEP** enable biological interpretation.  
+- Known vs novel variants must be distinguished.  
+- Annotation pipelines differ depending on the research context (clinical, cancer, population genetics, etc.).  
+- Always validate key variants using visualization tools like **IGV**.  
