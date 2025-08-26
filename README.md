@@ -23,7 +23,7 @@
 ## Repository Structure
 The repository is organized into two main sections:
 
-- **`projects/`** → contains the Applied Genomics final project:  
+- **`project/`** → contains the Applied Genomics final project:  
   - **REPORT_AG_NATALE_SOFIA.pdf** (full report)
   - **Presentation slides** (PowerPoint)  
 
