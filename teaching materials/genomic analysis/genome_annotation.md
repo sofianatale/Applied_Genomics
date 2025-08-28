@@ -30,36 +30,59 @@ Two main phases:
 
 ## Repetitive Elements (REs)
 
-### Types
-- **Low-complexity sequences**: e.g., homopolymeric runs (AAAAA).  
-- **Transposable elements (TEs)**:  
-  - Class I: RNA intermediate, *copy & paste*.  
-  - Class II: DNA intermediate, *cut & paste*.  
+### Types of REs
 
-### Challenges
-- Borders are not always clear.  
-- Nested repeats (repeats inside repeats).  
-- Huge variety of classes → time-consuming.  
+* **Low-complexity sequences** → simple base runs (e.g., `AAAAA`).
+* **Transposable elements (TEs):**
 
-### Tools and Approaches
-- **Library-based (homology)**  
-  - Compare genome vs curated libraries (species-specific or general).  
-  - Examples: **REPBASE**, **RepeatMasker** (uses BLAST, HMMs like NHMMer).  
-- **De novo discovery**  
-  - Identify candidate repeats based on structural similarity.  
-- **Mixed approaches**  
+  * **Class I (Retrotransposons)** → RNA intermediates, *copy & paste*.
+  * **Class II (DNA transposons)** → DNA intermediates, *cut & paste*.
 
-### Databases
-- **Dfam**:  
-  - Open database of TE profiles (HMMs + consensus sequences).  
-  - Built from multiple sequence alignments → seed alignments → profile HMMs.  
-- **REPET package**:  
-  - **Tedenovo** → detects TEs.  
-  - **Teannot** → annotates TEs.  
+### Challenges in RE annotation
 
-### Masking repeats
-- Replace nucleotides with `N` (hard masking) or lowercase letters (soft masking).  
-- Importance: prevents spurious BLAST hits and false gene annotations.  
+* **Unclear boundaries** → repeat borders are often difficult to define.
+* **Nested repeats** → repeats embedded inside other repeats.
+* **High diversity of classes** → makes annotation complex and time-consuming.
+
+### Approaches & Tools
+
+#### 1. **Library-based (homology search)**
+
+* **Concept:** compare the genome against curated repeat libraries.
+* **Databases & Tools:**
+
+  * **RepBase** → curated consensus sequences of repeats (commercial).
+  * **Dfam** → open database with **profile HMMs** and **consensus sequences** of TEs, built from multiple sequence alignments.
+  * **RepeatMasker** → masking tool that uses RepBase or Dfam as reference libraries (integrates BLAST and HMMs like NHMMer).
+
+#### 2. **De novo discovery**
+
+* **Concept:** identify novel repeats directly from the genome, without prior knowledge.
+* **Databases & Tools:**
+
+  * **REPET package**
+
+    * **TEdenovo** → detects and classifies transposable elements *de novo* (self-alignment + clustering + consensus building).
+    * **TEannot** → annotates repeats using de novo or external libraries.
+  * **RepeatModeler** → widely used to build species-specific repeat libraries for downstream masking.
+  
+#### 3. **Mixed approaches**
+
+* Combine both strategies:
+
+  1. Generate a **species-specific library de novo** (e.g., with RepeatModeler or TEdenovo).
+  2. Integrate it with **known libraries** (e.g., Dfam/RepBase).
+  3. Use **RepeatMasker** or **TEannot** for final annotation and masking.
+
+### Masking Repeats
+
+* **Hard masking** → replace nucleotides with `N`.
+* **Soft masking** → convert repeat bases to lowercase (`acgt`).
+* **Why masking is important:**
+
+  1. Prevents millions of spurious BLAST hits.
+  2. Avoids false gene predictions caused by repeats.
+  3. Informs downstream tools about repetitive regions.
 
 ## Gene Prediction Strategies
 
