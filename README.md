@@ -63,12 +63,12 @@ To generate a **chromosome-scale reference genome** of *M. marmota* using a hybr
 
 | Category                     | Details                                               | Estimated Cost (€) |
 |------------------------------|-------------------------------------------------------|--------------------|
-| **Sample collection & DNA**  | Fieldwork & logistics, consumables, cold chain, permits | 53,000 |
-| **Reference genome**         | PacBio HiFi, Illumina, Hi-C sequencing                | 30,000 |
+| **Sample collection & DNA**  | Fieldwork & logistics, consumables, cold chain, permits | 73,000 |
+| **Reference genome**         | PacBio HiFi, Illumina, Hi-C sequencing                | 30,100 |
 | **Population genomics**      | Pool-seq (80 pools, libraries, sequencing)            | 20,000 |
-| **Functional assays**        | RNA-seq (12,400), ATAC-seq (5,000), ChIP-seq (8,000), WGBS (15,000) | 40,400 |
-| **Personnel**                | Technician (18 mo, 37,500), Postdoc (24 mo, 70,000)  | 107,500 |
-| **HPC & Dissemination**      | Storage & computing (15,000), Open Access (8,000)    | 23,000 |
+| **Functional assays**        | RNA-seq, ATAC-seq, ChIP-seq, WGBS   | 40,400 |
+| **Personnel**                | Technician (18 mo, 37,500), Postdoc (24 mo, 70,000)  | 115,500 |
+| **Genome assembly & quality control**      | Storage & computing   | 15,000 |
 | **Total**                    |                                                       | **294,000** |
 
 
