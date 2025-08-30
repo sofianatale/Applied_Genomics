@@ -83,5 +83,3 @@ Note: Some SNP assays fail if one expected allele is not captured.
 - **High-throughput genotyping** reduces cost while retaining power to detect informative variants.  
 - **Reference genomes**, even if imperfect, provide the backbone for SNP mapping.  
 - Applications range from **evolutionary genetics** to **agricultural improvement**.  
-
-✍️ *Educational material prepared for academic purposes (Applied Genomics).*
