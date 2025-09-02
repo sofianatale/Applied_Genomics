@@ -102,7 +102,7 @@ plink \
 # 2) Compute F_ROH per individual
 #    L_GEN must be the autosomal genome length analyzed (e.g., 2,867,000 kb for GRCh38 autosomes)
 ```
-### ## Computing $F_{\text{ROH}}$
+### Computing $F_{\text{ROH}}$
 
 $$
 F_{\text{ROH}} = \frac{\mathrm{KB\_HOM}}{L_{\text{GEN (kb)}}}
