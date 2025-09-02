@@ -27,7 +27,7 @@ $$
 
 Interpretation: **% of the autosomal genome contained in ROH**. Higher values = higher genomic inbreeding.
 
-## 3) # IBD vs IBS and Relation to Pedigree
+## 3) IBD vs IBS and Relation to Pedigree
 
 - **IBD (Identical by Descent)**: two alleles are copies from a common ancestor  
   → this is what pedigree-based inbreeding coefficient ($F_{\text{PED}}$) targets.  
