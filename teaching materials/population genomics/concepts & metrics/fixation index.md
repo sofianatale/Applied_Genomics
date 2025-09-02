@@ -1,38 +1,129 @@
-# Fixation Index – F-statistics (F_ST)
+# Fixation Index – F-statistics ($F_{ST}$)
 
-**F_ST** is a population genetics parameter used at the **population genomics** level to quantify **genetic differentiation** between populations (defined by Fisher).
+## Introduction
+The **fixation index** ($F_{ST}$) is one of the most widely used statistics in **population genetics**.  
+It quantifies the **genetic differentiation between populations**, and was originally introduced by **Sewall Wright** (and later formalized by Fisher).
+
+- **Intuition**: $F_{ST}$ compares the level of genetic diversity **within populations** to the diversity **across the total species**.  
+- If populations are genetically similar, $F_{ST}$ is low.  
+- If populations are genetically distinct, $F_{ST}$ is high.
 
 ## Definition
-For a locus (or genomic window),
-\[
-F_{ST}=\frac{H_T - H_S}{H_T}
-\]
-where:
-- \(H_T\) = total (pooled) expected heterozygosity,
-- \(H_S\) = average expected heterozygosity **within** populations.
 
-## Interpretation
-- **\(F_{ST}=1\)** → two populations are **completely different** (e.g., pop1 fixed for allele A, pop2 fixed for allele B).
-- **\(F_{ST}=0\)** → populations are **identical** (same allele frequencies).
-- **0 < \(F_{ST}\) < 1** → populations share alleles but with **different frequencies** (e.g., A more frequent in pop1, B more frequent in pop2).
+For a given locus (or genomic window):
 
-## Window-based estimation and plotting
-- Divide the genome into windows (e.g., **1 Mb**) and compute \(F_{ST}\) per window to reduce noise and capture **linkage disequilibrium** signals.
-- Plot window \(F_{ST}\) values across chromosomes (Manhattan-style): **higher windows = greater differentiation**.
+$$
+F_{ST} = \frac{H_T - H_S}{H_T}
+$$
 
-## Study designs and data types
-- Works with **SNP chips** or **whole-genome sequencing**.
-- With limited budgets, use **DNA pooling (Pool-Seq)** to estimate population allele frequencies:
-  - Pool equal DNA amounts from each individual (**equimolar**).  
-  - Keep the pool size moderate to minimize technical error in DNA quantification and allele-frequency estimation.
+Where:  
+- $H_T$ = **total expected heterozygosity** (pooled across all populations).  
+- $H_S$ = **average expected heterozygosity within populations**.  
 
-## Practical workflow (conceptual)
-1. **Sequence/genotype** individuals or pools.
-2. **Call variants** and **estimate allele frequencies** (depth-aware for Pool-Seq/WGS).
-3. Compute **per-SNP \(F_{ST}\)**, then **average within windows** to obtain robust regional estimates.
-4. Perform **pairwise comparisons** for all population pairs (breed vs breed), or **group contrasts** (e.g., all black-coat breeds vs others).
-5. Visualize results (Manhattan plot), **interpret high-\(F_{ST}\)** windows, annotate genes, and generate **biological hypotheses** (e.g., local adaptation such as trypanosome resistance).
+### Expected Heterozygosity
+For a biallelic SNP with allele frequencies $p$ and $q$ ($p + q = 1$):
 
-## Notes
-- \(F_{ST}\) compares **genetic diversity between vs within** populations of the same species.
-- When planning, define: number of individuals, number of comparisons, platform (SNP chip vs WGS), **coverage/depth**, and costs.
+$$
+H = 2pq
+$$
+
+- $H_T$: expected heterozygosity if all populations are combined into one.  
+- $H_S$: average expected heterozygosity computed separately within each population, then averaged.  
+
+## Interpretation of $F_{ST}$
+
+- $F_{ST} = 0$ → Populations are genetically identical (no differentiation).  
+  - Same allele frequencies in all populations.  
+
+- $F_{ST} = 1$ → Populations are completely different.  
+  - Example: Population 1 fixed for allele A, population 2 fixed for allele B.  
+
+- $0 < F_{ST} < 1$ → Populations share alleles, but with different frequencies.  
+  - Example: Allele A more frequent in pop1, allele B more frequent in pop2.  
+
+> In practice, values of $F_{ST}$ rarely approach 1.  
+> - **Human populations**: typically $F_{ST} \approx 0.05–0.15$ between continents.  
+> - **Domesticated animals/breeds**: higher due to artificial selection and drift.
+
+## Estimation Strategy
+
+### Per-SNP vs Window-based
+- **Per-SNP $F_{ST}$**: computed for each variant.  
+  - Very noisy because of allele frequency sampling variance.  
+- **Window-based $F_{ST}$**: average across genomic windows (e.g., 50 kb, 1 Mb).  
+  - Reduces noise.  
+  - Highlights genomic regions under differentiation, possibly due to **selection**.  
+
+### Linkage Disequilibrium
+- Using windows accounts for **correlation among SNPs** due to LD.  
+- Helps identify **regions of differentiation**, not just single SNP outliers.  
+
+## Study Designs and Data Types
+
+- **Genotyping approaches**:  
+  - SNP arrays  
+  - Whole-genome sequencing (WGS)  
+
+- **Pool-Seq (DNA pooling)** as a cost-effective alternative:  
+  - Pool equal DNA amounts from multiple individuals (equimolar).  
+  - Estimate population allele frequencies from sequencing depth.  
+  - Advantages: cheap, scalable.  
+  - Limitations: technical error in quantification, loss of individual-level data.  
+
+## Practical Workflow
+
+1. **Sampling**  
+   - Define populations (e.g., breeds, geographic groups).  
+   - Ensure sufficient sample size per group.
+
+2. **Genotyping / Sequencing**  
+   - SNP chip or WGS.  
+   - For Pool-Seq: carefully control DNA quantification before pooling.
+
+3. **Variant Calling and Filtering**  
+   - Apply quality filters: depth, missingness, minor allele frequency (MAF).  
+
+4. **Allele Frequency Estimation**  
+   - From individual genotypes or sequencing reads (depth-aware for Pool-Seq).  
+
+5. **$F_{ST}$ Computation**  
+   - Per SNP using:  
+     $$
+     F_{ST} = \frac{H_T - H_S}{H_T}
+     $$
+   - Average within windows (e.g., 1 Mb) for robust estimates.
+
+6. **Comparisons**  
+   - Pairwise population comparisons (e.g., breed vs breed).  
+   - Group contrasts (e.g., black-coat breeds vs all others).  
+
+7. **Visualization**  
+   - Plot window-based $F_{ST}$ values across chromosomes.  
+   - Typically in a **Manhattan-style plot**, where higher points = stronger differentiation.  
+
+8. **Biological Interpretation**  
+   - Annotate high-$F_{ST}$ regions.  
+   - Link to candidate genes and pathways.  
+   - Generate hypotheses about local adaptation (e.g., trypanosome resistance, coat color, altitude adaptation).  
+
+## Notes and Considerations
+
+- **$F_{ST}$ compares diversity between vs within populations of the same species.**  
+- Important to define in advance:  
+  - Number of individuals per population.  
+  - Number of populations and comparisons.  
+  - Platform (SNP chip vs WGS).  
+  - Sequencing coverage and depth.  
+  - Budget constraints.  
+
+- **Low $F_{ST}$** does not always mean no selection:  
+  - Selection on polygenic traits may leave subtle signals.  
+- **High $F_{ST}$ windows** are candidates for **selective sweeps** or **local adaptation**.  
+
+## Summary
+
+- $F_{ST}$ is a measure of **genetic differentiation** between populations.  
+- Defined as the proportional reduction in heterozygosity within subpopulations relative to the total.  
+- Ranges from 0 (identical populations) to 1 (completely distinct populations).  
+- Estimated per SNP, but typically averaged across **genomic windows**.  
+- Useful for identifying genomic regions under **selection**, guiding biological interpretation of population history and adaptation.
