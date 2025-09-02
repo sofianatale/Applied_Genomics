@@ -21,20 +21,25 @@ Let:
 - `L_GEN` = total **autosomal** genome length considered (Mb)
 
 Then the **genomic inbreeding coefficient** is:
-\[
+$$
 F_{\text{ROH}} = \frac{S_{\text{ROH}}}{L_{\text{GEN}}}
-\]
+$$
 
 Interpretation: **% of the autosomal genome contained in ROH**. Higher values = higher genomic inbreeding.
 
-## 3) IBD vs IBS and relation to pedigree (F_PED)
+## 3) # IBD vs IBS and Relation to Pedigree
 
-- **IBD (Identical by Descent)**: two alleles are copies from a **common ancestor** (what pedigree-based \(F_{\text{PED}}\) targets).
-- **IBS (Identical by State)**: alleles look identical but origin is unknown.
+- **IBD (Identical by Descent)**: two alleles are copies from a common ancestor  
+  → this is what pedigree-based inbreeding coefficient ($F_{\text{PED}}$) targets.  
 
-**ROH-based methods count homozygosity regardless of origin (IBD + IBS).**  
-However, **long ROH** are unlikely to arise by chance → **more likely IBD**.  
-Thus, *F_ROH* approximates the genome-wide **autozygosity** and is often more **informative** than \(F_{\text{PED}}\) when pedigrees are shallow/incomplete.
+- **IBS (Identical by State)**: alleles look identical, but their origin is unknown.  
+
+- **ROH-based methods** count homozygosity regardless of origin (**IBD + IBS**).  
+  - **Short ROH** can arise by chance → may reflect IBS.  
+  - **Long ROH** are unlikely to arise randomly → more likely IBD.  
+
+Thus, **$F_{\text{ROH}}$** approximates the genome-wide autozygosity and is often more informative than **$F_{\text{PED}}$** when pedigrees are shallow or incomplete.
+
 
 ## 4) Calling ROH: key choices & biases
 
@@ -97,17 +102,19 @@ plink \
 # 2) Compute F_ROH per individual
 #    L_GEN must be the autosomal genome length analyzed (e.g., 2,867,000 kb for GRCh38 autosomes)
 ```
-### Computing \(F_{\text{ROH}}\)
+### ## Computing $F_{\text{ROH}}$
 
-\[
-F_{\text{ROH}}=\frac{\mathrm{KB\_HOM}}{L_{\text{GEN (kb)}}}
-\]
+$$
+F_{\text{ROH}} = \frac{\mathrm{KB\_HOM}}{L_{\text{GEN (kb)}}}
+$$
 
-Where `KB_HOM` is per individual from `*.hom.indiv`.
+- **KB_HOM**: total length of homozygous segments per individual (from `*.hom.indiv`).  
+- **$L_{\text{GEN (kb)}}$**: total genome length in kilobases.  
 
-*For WGS, prefer length-based approaches (post-process `*.hom`) and consider depth/variant QC filters.*
+### Notes
+- For **whole-genome sequencing (WGS)**, it is recommended to use **length-based approaches** (post-processing `*.hom` files).  
+- Apply **depth and variant quality filters** to reduce false positives in ROH detection.
 
----
 
 ### 7) How to read ROH summaries
 
@@ -126,8 +133,6 @@ Where `KB_HOM` is per individual from `*.hom.indiv`.
 - **Recent consanguinity** → many long ROH.  
 - **Bottleneck** → increased ROH count; if followed by inbreeding, also longer ROH.
 
----
-
 ### 8) ROH islands (population-level signal)
 
 A **ROH island** is a genomic region with **high ROH frequency** across individuals.
@@ -139,22 +144,71 @@ A **ROH island** is a genomic region with **high ROH frequency** across individu
 - Map genes in the island.  
 - Test functional hypotheses (e.g., pathogen resistance, local adaptation).
 
----
+# Linking ROH, Pedigree, and Hardy–Weinberg Equilibrium
 
-### 9) Linking ROH to pedigree and HWE
+## Inbreeding and HWE
 
-- **Inbreeding depression** emerges as increased **homozygote** frequencies (no change in allele frequencies), producing deviations from **Hardy–Weinberg equilibrium**.
-- Test deviations with a **\(\chi^2\)** test (df = 1) using observed vs expected genotype counts.
-- \(F_{\text{PED}}\) may **underestimate** inbreeding when pedigrees are shallow/incomplete; \(F_{\text{ROH}}\) leverages the **realized** genomic mosaic.
+Inbreeding increases the probability that two alleles at a locus are **identical by descent (IBD)**.  
+This does **not change allele frequencies**, but it does increase the frequency of **homozygotes** and decrease the frequency of **heterozygotes**.  
 
----
+As a result, inbreeding produces **deviations from Hardy–Weinberg equilibrium (HWE)**:
 
-### 10) Reporting checklist
+- Expected genotype frequencies under HWE:  
+  - $p^2$, $2pq$, $q^2$  
+- With inbreeding coefficient $F$:  
+  - Homozygotes increase by factor $(1 + F)$  
+  - Heterozygotes decrease by factor $(1 - F)$  
 
-- Genotyping/seq platform and variant QC thresholds.  
-- ROH calling parameters (window SNPs, max HET/MISS, min length, density, gap).  
-- Autosomes and \(L_{\text{GEN}}\) used.  
-- Per-individual: `nROH`, `S_ROH` (Mb), mean/median `L_ROH`, \(F_{\text{ROH}}\).  
-- ROH length classes (short/medium/long) with counts.  
-- Population summaries, ROH-island analysis, and
+These deviations can be formally tested using a **$\chi^2$ test (df = 1)** that compares **observed vs expected genotype counts**.
 
+## Pedigree vs Genomic Inbreeding Estimates
+
+- **$F_{\text{PED}}$** (pedigree-based):  
+  - Estimates *expected autozygosity* based on known pedigree structure.  
+  - Underestimates inbreeding when pedigrees are **shallow or incomplete**.  
+
+- **$F_{\text{ROH}}$** (ROH-based):  
+  - Captures *realized genomic autozygosity* by directly measuring homozygous tracts.  
+  - Reflects the actual recombination and inheritance mosaic across the genome.  
+  - Often more informative than $F_{\text{PED}}$ in real populations.
+
+## Computing $F_{\text{ROH}}$
+
+$$
+F_{\text{ROH}} = \frac{\mathrm{KB\_HOM}}{L_{\text{GEN (kb)}}}
+$$
+
+- **KB_HOM**: total length of homozygous runs per individual (from `*.hom.indiv`).  
+- **$L_{\text{GEN (kb)}}$**: total autosomal genome length in kilobases.  
+
+### Practical Notes
+- For **whole-genome sequencing (WGS)**:
+  - Use **length-based ROH approaches** (post-process `*.hom` files).  
+  - Apply **depth and variant QC filters** to avoid false ROH calls.  
+
+## Reporting Checklist for ROH Studies
+
+When reporting ROH analyses, include:
+
+1. **Genotyping/sequencing platform** and **variant QC thresholds**.  
+2. **ROH calling parameters**:  
+   - Window size (number of SNPs)  
+   - Maximum allowed heterozygotes/missing sites  
+   - Minimum ROH length  
+   - SNP density thresholds  
+   - Allowed gaps between SNPs  
+3. **Autosomes and genome length ($L_{\text{GEN}}$)** used in calculations.  
+4. **Per-individual statistics**:  
+   - Number of ROH (nROH)  
+   - Total ROH length ($S_{\text{ROH}}$, in Mb)  
+   - Mean/median ROH length ($L_{\text{ROH}}$)  
+   - $F_{\text{ROH}}$  
+5. **ROH length classes** (short / medium / long) with counts.  
+6. **Population summaries** and **ROH-island analysis** (regions recurrently autozygous across individuals).  
+
+## Take-Home Message
+
+- Inbreeding shifts populations away from HWE, **increasing homozygosity**.  
+- Pedigree-based estimates ($F_{\text{PED}}$) capture expected autozygosity, but can miss hidden relatedness.  
+- ROH-based estimates ($F_{\text{ROH}}$) directly measure realized genomic homozygosity, often giving a more accurate picture.  
+- Proper reporting of methods, QC, and ROH statistics is essential for reproducibility and interpretation.
