@@ -27,7 +27,9 @@ The repository is organized into two main sections:
   - **REPORT_AG_NATALE_SOFIA.pdf** (full report)
   - **Reference Genome Assembly of Marmota marmota Reveals Molecular Bases of Hibernation and Life at High Altitude.pptx** (PowerPoint)  
 
-- **`teaching-materials/`** → lecture notes, transcripts and study resources from the Applied Genomics course.  
+- **`teaching-materials/`** → lecture notes, transcripts and study resources from the Applied Genomics course.
+
+- **`figures/`** → figures and graphical materials generated or used in the project.
 
 ## Introduction
 The Alpine marmot (*Marmota marmota*) is an alpine rodent adapted to **chronic hypoxia** at high altitude and to **prolonged hibernation** with strong metabolic suppression.  
