@@ -33,7 +33,8 @@ Because **de novo genome assembly** requires high computational power, time and 
 ## Ten Steps of Genome Assembly
 
 1. **Gather information about the target genome**  
-   - Genome size, heterozygosity, repeats, ploidy.  
+Genome size, heterozygosity, repeats, ploidy.
+   - Genome size: quantity of DNA contained in the haploid genome: it can be expressed both in terms of bases (pb) and in picograms of DNA (pg)
    - Methods to estimate size:  
      - *Flow cytometry* → provides **C-value**.  
      - *Databases* → use closely related species.  
